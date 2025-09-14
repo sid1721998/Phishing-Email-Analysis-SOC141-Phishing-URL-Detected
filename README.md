@@ -1,124 +1,130 @@
-SOC Incident Report — Event ID 86: Phishing URL Detected
-Executive Summary
+<h1 align="center">🔎 SOC Incident Report</h1>
+<h3 align="center">Event ID 86: Phishing URL Detected</h3>
 
-On September 10th at 06:00 AM, the SOC detected a phishing URL alert (Event ID: 86) originating from host EmilyComp (user: ellie).
-The alert was triggered by outbound traffic to a known suspicious domain (mogagrocol.ru), hosted in the Russian Federation.
+---
 
-Subsequent investigation confirmed that the request originated from the internal IP 172.16.17.49 and targeted a phishing page via HTTP.
-Further analysis of correlated email logs revealed delivery of a phishing email containing a malicious ZIP attachment exploiting CVE-2017-0199 / Follina exploit.
+## 📌 Executive Summary
+<p>
+On <b>September 10th at 06:00 AM</b>, the SOC detected a phishing URL alert 
+(<b>Event ID: 86</b>) originating from host <b>EmilyComp</b> (user: <code>ellie</code>).  
+The alert was triggered by outbound traffic to a known suspicious domain 
+(<code>mogagrocol.ru</code>), hosted in the Russian Federation.  
+<br><br>
+Investigation confirmed that the request originated from 
+<code>172.16.17.49</code> and targeted a phishing page via HTTP.  
+Correlated email logs revealed delivery of a phishing email containing a 
+malicious ZIP attachment exploiting <b>CVE-2017-0199 / Follina</b>.  
+<br><br>
+<b>Verdict:</b> True Positive phishing attack, requiring containment and remediation.
+</p>
 
-The incident was determined to be a true positive phishing attack, requiring containment and remediation actions.
+---
 
-Incident Details
+## 📝 Incident Details
+<table>
+<tr><td><b>Event ID</b></td><td>86 SOC141</td></tr>
+<tr><td><b>Incident Type</b></td><td>Proxy (Phishing URL Detected)</td></tr>
+<tr><td><b>Created Date</b></td><td>September 10, 06:00 AM</td></tr>
+<tr><td><b>Source Host</b></td><td>EmilyComp (172.16.17.49)</td></tr>
+<tr><td><b>Destination Host</b></td><td>mogagrocol.ru (91.189.114.8)</td></tr>
+<tr><td><b>Username</b></td><td>ellie</td></tr>
+<tr><td><b>Request URL</b></td>
+<td>
+<code>http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdefend.io</code>
+</td></tr>
+<tr><td><b>Device Action</b></td><td>Allowed ❌</td></tr>
+</table>
 
-Event ID: 86 SOC141
-Incident Type: Proxy (Phishing URL Detected)
-Created Date: September 10, 06:00 AM
-Source Host: EmilyComp (172.16.17.49)
-Destination Host: mogagrocol.ru (91.189.114.8)
-Username: ellie
-Request URL:
-http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdefend.io
+<p align="center">
+  <img src="1.webp" alt="Phishing Alert Screenshot" width="600"/>
+</p>
 
-Device Action: Allowed
+---
 
-![Alt text](1.webp)
-
-Log Evidence
-Proxy Log Extract
+## 📂 Log Evidence
+<pre>
 type: Proxy
 source_address: 172.16.17.49
 source_port: 55662
 destination_address: 91.189.114.8
 destination_port: 80
 time: Mar 22, 2021, 09:23 PM
-Request URL: http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdefend.io
+Request URL: 
+http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdefend.io
+</pre>
 
-Threat Intelligence Findings
+---
 
-VirusTotal (URL): 10/98 vendors flagged as malicious
+## 🌐 Threat Intelligence Findings
+- **VirusTotal (URL):** 10/98 vendors flagged as malicious  
+- **URLScan.io:**  
+  - Domain: `mogagrocol.ru`  
+  - Hosted in Russia (RU-CENTER JSC)  
+  - Previously scanned >750 times, flagged as malicious  
+  - Multiple related IP communications observed  
+- **Email Correlation:**  
+  - From: `radiosputnik@ria.ru`  
+  - To: `jonas@letsdefend.io`  
+  - Subject: *Invitation for an interview*  
+  - Attachment: `05-2022-0438.doc.zip`  
+  - Detection: *MSOffice/Follina Exploit (CVE-2017-0199)*  
 
-URLScan.io:
-Domain: mogagrocol.ru
-Hosted in Russia (RU-CENTER JSC)
-Previously scanned >750 times, flagged as malicious
-Multiple related IP communications observed
+---
 
-Email Correlation:
-From: radiosputnik@ria.ru
+## 🚨 Incident Response Workflow
+### 1. Detection
+- Outbound HTTP request to malicious domain  
+- URL flagged by multiple AV vendors  
 
-To: jonas@letsdefend.io
-Subject: Invitation for an interview
-Attachment: 05-2022-0438.doc.zip
+### 2. Analysis
+- Origin: User **ellie** on host **EmilyComp**  
+- Destination IP: **91.189.114.8** (Russia)  
+- Correlated phishing email with malicious DOCX exploit  
+- Suspicious command execution → dropped `KBDYAK.exe`  
 
-VirusTotal: 3/64 flagged as malicious
-Detection: MSOffice/Follina Exploit (CVE-2017-0199)
+### 3. Containment
+- Isolated host from network  
+- Blocked domain + related IOCs at proxy/firewall  
+- Alerted users & IT support  
 
-Incident Response Workflow
-1. Detection
+### 4. Remediation
+- Removed malicious attachment  
+- Blocked similar email signatures  
+- AV/EDR scans + patching  
+- Restored endpoint from clean image  
 
-Alert triggered by outbound HTTP request to known phishing domain.
+### 5. Recovery & Monitoring
+- Ongoing IOC monitoring  
+- No lateral movement detected  
 
-URL flagged by multiple AV vendors as malicious.
+### 6. Documentation
+- Collected artifacts & IOCs  
+- Compiled final SOC report  
 
-2. Analysis
+---
 
-Confirmed traffic originated from user ellie on EmilyComp.
+## 🛑 Indicators of Compromise (IOCs)
+| Type | Value |
+|------|-------|
+| **Domain** | mogagrocol.ru |
+| **IP Address** | 91.189.114.8, 195.24.68.4 |
+| **Malicious Attachment** | 05-2022-0438.doc.zip |
+| **File Hash (SHA256)** | 90a1a94f5f9efce66697129bd4267b5e5102eec7446d51b769882360ae035b19 |
+| **Malware Executable** | KBDYAK.exe |
+| **Exploit Used** | CVE-2017-0199 / Follina |
 
-Destination: Russian Federation IP (91.189.114.8).
+---
 
-Cross-referenced with phishing email containing malicious DOCX exploiting Follina.
+## ✅ Conclusion
+This was a **confirmed phishing attack** leveraging a malicious URL and document exploit.  
+The SOC successfully **detected, analyzed, contained, and remediated** the threat.  
 
-Endpoint exhibited suspicious command execution linked to malware download (KBDYAK.exe).
+- **Verdict:** True Positive  
+- **Impact:** Limited to one endpoint, no lateral spread  
+- **Actions Taken:** Containment, remediation, patching, user awareness  
 
-3. Containment
-
-Isolated endpoint (EmilyComp) from network to prevent further propagation.
-
-Blocked domain mogagrocol.ru and related IOCs at proxy/firewall level.
-
-Alerted affected user(s) and IT support.
-
-4. Remediation
-
-Removed malicious attachment and blocked similar email signatures at email security gateway.
-
-Conducted AV/EDR scans on affected endpoint.
-
-Applied Microsoft patching for CVE-2017-0199 & Follina exploitation vector.
-
-Restored endpoint from clean image.
-
-5. Recovery & Monitoring
-
-Monitored network logs for recurrence of IOCs.
-
-Confirmed no lateral movement or additional compromised endpoints.
-
-6. Documentation
-
-Collected all artifacts and Indicators of Compromise (IOCs).
-
-Compiled analyst notes into final SOC case report.
-
-Indicators of Compromise (IOCs)
-
-Domain: mogagrocol.ru
-IP Address: 91.189.114.8, 195.24.68.4
-Malicious Attachment: 05-2022-0438.doc.zip
-File Hash (SHA256): 90a1a94f5f9efce66697129bd4267b5e5102eec7446d51b769882360ae035b19
-Malware Executable: KBDYAK.exe
-Exploit Used: CVE-2017-0199 / Follina
-
-Conclusion
-This incident was a confirmed phishing attack leveraging a malicious URL and document exploit to attempt compromise of an internal host.
-The SOC successfully detected, analyzed, and contained the threat.
-
-Verdict: True Positive
-Impact: Limited to single endpoint, contained before lateral spread
-Actions Taken: Containment, remediation, patching, user notification
-Preventive Recommendations:
-Enforce email attachment sandboxing
-Block known malicious domains at proxy/DNS level
-Conduct phishing awareness training for users
-Ensure patch management is enforced against known exploits
+### 🔒 Preventive Recommendations
+- Enforce **email attachment sandboxing**  
+- Block malicious domains at **proxy/DNS level**  
+- Conduct **phishing awareness training**  
+- Ensure **patch management** for CVEs  
