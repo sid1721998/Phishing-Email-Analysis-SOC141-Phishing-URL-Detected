@@ -22,6 +22,7 @@ http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdef
 
 Device Action: Allowed
 
+![Alt text](1.webp)
 
 Log Evidence
 Proxy Log Extract
