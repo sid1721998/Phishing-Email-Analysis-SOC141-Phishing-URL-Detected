@@ -70,7 +70,7 @@ http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdef
   - Detection: *MSOffice/Follina Exploit (CVE-2017-0199)*  
 
 <p align="center">
-  <img src="4.webp" alt="Phishing Alert Screenshot" width="600"/>
+  <img src="5.webp" alt="Phishing Alert Screenshot" width="600"/>
 </p>
 ---
 
