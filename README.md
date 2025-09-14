@@ -116,6 +116,11 @@ http://mogagrocol.ru/wp-content/plugins/akismet/fv/index.php?email=ellie@letsdef
 | **Malware Executable** | KBDYAK.exe |
 | **Exploit Used** | CVE-2017-0199 / Follina |
 
+
+
+<p align="center">
+  <img src="7.webp" alt="Phishing Alert Screenshot" width="600"/>
+</p>
 ---
 
 ## ✅ Conclusion
